@@ -9,7 +9,7 @@ pygame.init()
 bredde = 800
 høyde = 600
 vindu = pygame.display.set_mode((bredde, høyde))
-pygame.display.set_caption("Space invaders")
+pygame.display.set_caption("Space invaders v2")
 
 
 #Farger
@@ -39,7 +39,7 @@ laserx = 0
 lasery = 480
 laserx_forandring = 0
 lasery_forandring = 20  #Hastighet til laser
-lasertid = "ready"
+lasertid = "ready" #Om laseren er klar for å skytes eller ikke
 
 #Fienden
 fiende_nummer = 6 #Antall fiender
@@ -53,9 +53,7 @@ fiendex_forandring =[]
 fiendey_forandring = []
 
 
- #Score og level
-score_value = 0
-level_nå = 0 #Startlevel
+ #Leveler
 leveler = 10
 
 
@@ -81,7 +79,7 @@ def skyt_laser(x,y):  #For å skyte laser fra x-posisjon og y-endring
     
 def hviskollisjon(fiendex,fiendey,laserx,lasery):  #Funksjon for å sjekke om laser treffer romvesen
 #Matematisk formel som sjekker om x,- og y -kordinatene til romvesen og laser er mindre enn en viss avstand fra hverandre
-    avstand = math.sqrt(math.pow(fiendex-(laserx+30), 2) + (math.pow(fiendey-(lasery+40),2)))  
+    avstand = math.sqrt(math.pow(fiendex-(laserx+20), 2) + (math.pow(fiendey-(lasery+40),2)))  
     if avstand < 27:
         return True
     else:
@@ -104,11 +102,12 @@ def ny_runde():  #Lager nye romvesen for hvert "spill"
     fiendey_forandring.clear()
     for i in range(fiende_nummer): #Lager nye romvesen og posisjoner
         fiendeImg.append(ROMVESEN)
-        fiendex.append(random.randint(0, bredde-40))
+        fiendex.append(random.randint(60, bredde-60))
         fiendey.append(random.randint(50,150))
         fiendex_forandring.append(fiende_fart)
         fiendey_forandring.append(40)
-def start_skjerm():
+        
+def start_skjerm(): #Introskjermen
      vindu.blit(start_bg, (0,0))
      skriv("v2",50,600,200,YELLOW)
      skriv("Av Jesper Vigtel Hølland", 30,550,10,WHITE)
@@ -122,14 +121,14 @@ main = True
 intro = True
 kjører = False
 
-    
+#Hele spilleloopen
 while main:  #Loop for hele programmet
     for e in pygame.event.get():  #For å lukke programmet
             if e.type == pygame.QUIT:
                 pygame.quit()
     #High score oppdatering
     high_score_fil = open("./assets/poeng.txt","r")
-    high_score = high_score_fil.read()
+    high_score = high_score_fil.read()  #High score verdi fra fil
     
     
     #Introskjerm for spillet
@@ -143,10 +142,11 @@ while main:  #Loop for hele programmet
                 intro = False
                 
         pygame.display.update()
-   
+    
+    fiende_fart = 1
     ny_runde()  #Lager nye romvesen for hver runde
-    fiende_fart = 1  
     score_value = 0
+    level_nå = 0
     
     #Koden for spillet
     while kjører:
