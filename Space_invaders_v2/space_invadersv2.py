@@ -2,7 +2,8 @@ import pygame
 import random
 from pylab import math
 
-#Starter programmer
+
+#Starter pygame
 pygame.init()
 
 #Skjermen
@@ -19,14 +20,14 @@ WHITE = (255, 255, 255)
 
 
 #Bakgrunn
-bg = pygame.image.load("./assets/sort-bakgrunn.png")
-bg = pygame.transform.scale(bg, (bredde, høyde))
-start_bg = pygame.image.load("./assets/startbilde.png")
+bg = pygame.image.load("./assets/sort-bakgrunn.png")  #Henter bakgrunnsbilde for spillet
+bg = pygame.transform.scale(bg, (bredde, høyde)) #Endrer størrelsen slik at det passer
+start_bg = pygame.image.load("./assets/startbilde.png") #For introsiden
 start_bg = pygame.transform.scale(start_bg, (bredde,høyde))
 
 
 #Lager spiller
-SPILLER = pygame.image.load("./assets/gul-skip.png")
+SPILLER = pygame.image.load("./assets/gul-skip.png")  #Henter romskip figur fra filer
 spillerx = 370  #Startposisjon
 spillery = 470
 spillerx_forandring = 0
@@ -34,8 +35,8 @@ fart = 8 #Hastighet til spiller
 
 
 #Laseren   ready = du kan ikke se laseren,  fire = du kan se laseren
-SPILLERLASER = pygame.image.load("./assets/gul-laser.png")
-laserx = 0
+SPILLERLASER = pygame.image.load("./assets/gul-laser.png") #Henter laser
+laserx = 0 #Startposisjon laser
 lasery = 480
 laserx_forandring = 0
 lasery_forandring = 20  #Hastighet til laser
@@ -53,8 +54,9 @@ fiendex_forandring =[]
 fiendey_forandring = []
 
 
- #Leveler
+ #Antall leveler i spillet (Kan endres for mer utfordring) (evt. lage easy og hard valg)
 leveler = 10
+hastighet_forandring = 1  #Hvor mye farten endres når level up (kan endres for morroskyld)  
 
 
 
@@ -102,7 +104,7 @@ def ny_runde():  #Lager nye romvesen for hvert "spill"
     fiendey_forandring.clear()
     for i in range(fiende_nummer): #Lager nye romvesen og posisjoner
         fiendeImg.append(ROMVESEN)
-        fiendex.append(random.randint(60, bredde-60))
+        fiendex.append(random.randint(0, bredde-60))
         fiendey.append(random.randint(50,150))
         fiendex_forandring.append(fiende_fart)
         fiendey_forandring.append(40)
@@ -232,7 +234,7 @@ while main:  #Loop for hele programmet
         
         for i in range (1,leveler+1): #Øker farten til romvesener for hver 6. skutt. (levelup)
             if score_value == i*6:
-                fiende_fart = i
+                fiende_fart = i*hastighet_forandring
                 skriv("Level "+str(i)+" Farten øker!",30,10,40,WHITE) 
                 level_nå = i
                 
